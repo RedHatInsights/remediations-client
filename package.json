@@ -1,0 +1,34 @@
+{
+  "name": "@redhat-cloud-services/remediations-client",
+  "version": "0.1.0",
+  "private": false,
+  "description": "TypeScript client for Insights Remediations using Axios",
+  "keywords": [
+    "axios",
+    "typescript",
+    "openapi-client",
+    "openapi-generator",
+    "red-hat",
+    "insights",
+    "remediations"
+  ],
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:RedHatInsights/remediations-client.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "generate": "TS_POST_PROCESS_FILE='./postProcess.sh' openapi-generator generate -i $SPEC -g typescript-axios -o . --skip-validate-spec --enable-post-process-file",
+    "generate:local": "SPEC='http://localhost:9002/r/insights/platform/remediations/v1/openapi.json' npm run generate",
+    "generate:prod": "SPEC='http://access.redhat.com/r/insights/platform/remediations/v1/openapi.json' npm run generate"
+  },
+  "dependencies": {
+    "axios": "^0.18.0"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "0.0.8-4.0.0-beta2",
+    "typescript": "^3.3.3"
+  }
+}
