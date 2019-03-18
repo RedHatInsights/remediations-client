@@ -1,0 +1,13 @@
+wwwroot/*.js
+node_modules
+typings
+dist
+
+test
+*.sh
+*.js
+
+.openapi-generator
+tsconfig.json
+.eslintrc.yml
+.openapi-generator-ignore
