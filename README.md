@@ -18,6 +18,6 @@ const remediations = await api.getRemediations();
 ## Known issues
 
 * https://github.com/OpenAPITools/openapi-generator/issues/2154
-  * worked around in [postProcess.sh](./blob/master/postProcess.sh)
+  * worked around in [postProcess.sh](./postProcess.sh)
 * https://github.com/OpenAPITools/openapi-generator/issues/1714
-  * worked around by skipping spec validation in [package.json](./blob/master/package.json)
+  * worked around by skipping spec validation in [package.json](./package.json)
