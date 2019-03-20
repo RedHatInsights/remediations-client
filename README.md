@@ -1,19 +1,24 @@
-# Remediations Client
+# Platform API Client Template
 
-TypeScript client for [Remediations API](https://access.redhat.com/r/insights/platform/remediations/v1/openapi.json) generated using [openapi-generator](https://github.com/OpenAPITools/openapi-generator).
+This project can be used as a template for building TypeScript/JavaScript clients for OpenAPI 3.0 compatible APIs
 
-## Usage
+## Generating API client
 
-```sh
-npm i --save remediations-client
-```
+1. Fork this repository
+1. Modify package.json
+    * change name, version, description, keywords and repository sections as appropriate
+    * modify `SPEC` assignment in scripts section to point to the OpenAPI specification
+1. Run `npm run generate:prod` to generate ts files
+1. Run `npm run build` to build dist files
 
-```js
-import { RemediationsApi } from '@redhat-cloud-services/remediations-client';
+## Using generated client locally
 
-const api = new RemediationsApi();
-const remediations = await api.getRemediations();
-```
+1. In the client repository run `npm link`
+1. In the consuming application run `npm link @redhat-cloud-services/<client name>`
+
+## Publishing to npm
+
+After the changes are tested, commited and tagged run `npm publish`.
 
 ## Known issues
 
