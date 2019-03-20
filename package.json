@@ -27,7 +27,7 @@
     "generate:local": "SPEC='http://localhost:9002/r/insights/platform/remediations/v1/openapi.json' npm run generate",
     "generate:prod": "SPEC='http://access.redhat.com/r/insights/platform/remediations/v1/openapi.json' npm run generate",
     "lint": "eslint test/*.ts",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "verify": "npm-run-all lint test"
   },
   "dependencies": {
