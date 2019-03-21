@@ -15,6 +15,11 @@ const api = new RemediationsApi();
 const remediations = await api.getRemediations();
 ```
 
+## API Client Template
+
+This project may be used as a template for generating other API clients.
+See [the starter branch](https://github.com/RedHatInsights/remediations-client/tree/starter) for more information.
+
 ## Known issues
 
 * https://github.com/OpenAPITools/openapi-generator/issues/2154
