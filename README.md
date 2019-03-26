@@ -5,7 +5,7 @@ TypeScript client for [Remediations API](https://access.redhat.com/r/insights/pl
 ## Usage
 
 ```sh
-npm i --save remediations-client
+npm i --save @redhat-cloud-services/remediations-client
 ```
 
 ```js
