@@ -17,7 +17,7 @@ import * as url from "url";
 import { Configuration } from "./configuration";
 import globalAxios, { AxiosPromise, AxiosInstance } from 'axios';
 
-const BASE_PATH = "https://access.redhat.com/r/insights/platform/remediations/v1".replace(/\/+$/, "");
+const BASE_PATH = "http://localhost:9002/api/remediations/v1".replace(/\/+$/, "");
 
 /**
  *
@@ -404,7 +404,19 @@ export interface RemediationList {
      * @type {Array<RemediationListItem>}
      * @memberof RemediationList
      */
-    remediations: Array<RemediationListItem>;
+    data: Array<RemediationListItem>;
+    /**
+     *
+     * @type {RemediationListMeta}
+     * @memberof RemediationList
+     */
+    meta: RemediationListMeta;
+    /**
+     *
+     * @type {RemediationListLinks}
+     * @memberof RemediationList
+     */
+    links: RemediationListLinks;
 }
 
 /**
@@ -467,6 +479,58 @@ export interface RemediationListItem {
      * @memberof RemediationListItem
      */
     needsReboot: boolean;
+}
+
+/**
+ *
+ * @export
+ * @interface RemediationListLinks
+ */
+export interface RemediationListLinks {
+    /**
+     *
+     * @type {string}
+     * @memberof RemediationListLinks
+     */
+    first: string;
+    /**
+     *
+     * @type {string}
+     * @memberof RemediationListLinks
+     */
+    last: string;
+    /**
+     *
+     * @type {string}
+     * @memberof RemediationListLinks
+     */
+    next: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof RemediationListLinks
+     */
+    previous: string | null;
+}
+
+/**
+ *
+ * @export
+ * @interface RemediationListMeta
+ */
+export interface RemediationListMeta {
+    /**
+     * number of results returned
+     * @type {number}
+     * @memberof RemediationListMeta
+     */
+    count: number;
+    /**
+     * total number of results matching the query
+     * @type {number}
+     * @memberof RemediationListMeta
+     */
+    total: number;
 }
 
 /**
@@ -1109,10 +1173,14 @@ export const RemediationsApiAxiosParamCreator = function (configuration?: Config
          * Provides information about Remediations
          * @summary List Remediations
          * @param {'updated_at' | '-updated_at' | 'name' | '-name' | 'system_count' | '-system_count' | 'issue_count' | '-issue_count'} [sort] Sort order
+         * @param {string} [filter] Remediation name filter. If specified only remediations whose name matches the given string will be returned.
+         * @param {number} [limit] Maximum number of results to return
+         * @param {number} [offset] Indicates the starting position of the query relative to the complete set of items that match the query
+         * @param {string} [system] System identifier. If specified only remediations that involve the given system will be returned.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRemediations(sort?: 'updated_at' | '-updated_at' | 'name' | '-name' | 'system_count' | '-system_count' | 'issue_count' | '-issue_count', options: any = {}): RequestArgs {
+        getRemediations(sort?: 'updated_at' | '-updated_at' | 'name' | '-name' | 'system_count' | '-system_count' | 'issue_count' | '-issue_count', filter?: string, limit?: number, offset?: number, system?: string, options: any = {}): RequestArgs {
             const localVarPath = `/remediations`;
             const localVarUrlObj = url.parse(localVarPath, true);
             let baseOptions;
@@ -1125,6 +1193,22 @@ export const RemediationsApiAxiosParamCreator = function (configuration?: Config
 
             if (sort !== undefined) {
                 localVarQueryParameter['sort'] = sort;
+            }
+
+            if (filter !== undefined) {
+                localVarQueryParameter['filter'] = filter;
+            }
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+            if (system !== undefined) {
+                localVarQueryParameter['system'] = system;
             }
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
@@ -1327,11 +1411,15 @@ export const RemediationsApiFp = function(configuration?: Configuration) {
          * Provides information about Remediations
          * @summary List Remediations
          * @param {'updated_at' | '-updated_at' | 'name' | '-name' | 'system_count' | '-system_count' | 'issue_count' | '-issue_count'} [sort] Sort order
+         * @param {string} [filter] Remediation name filter. If specified only remediations whose name matches the given string will be returned.
+         * @param {number} [limit] Maximum number of results to return
+         * @param {number} [offset] Indicates the starting position of the query relative to the complete set of items that match the query
+         * @param {string} [system] System identifier. If specified only remediations that involve the given system will be returned.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRemediations(sort?: 'updated_at' | '-updated_at' | 'name' | '-name' | 'system_count' | '-system_count' | 'issue_count' | '-issue_count', options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<RemediationList> {
-            const localVarAxiosArgs = RemediationsApiAxiosParamCreator(configuration).getRemediations(sort, options);
+        getRemediations(sort?: 'updated_at' | '-updated_at' | 'name' | '-name' | 'system_count' | '-system_count' | 'issue_count' | '-issue_count', filter?: string, limit?: number, offset?: number, system?: string, options?: any): (axios?: AxiosInstance, basePath?: string) => AxiosPromise<RemediationList> {
+            const localVarAxiosArgs = RemediationsApiAxiosParamCreator(configuration).getRemediations(sort, filter, limit, offset, system, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = Object.assign(localVarAxiosArgs.options, {url: basePath + localVarAxiosArgs.url})
                 return axios.request(axiosRequestArgs);
@@ -1444,11 +1532,15 @@ export const RemediationsApiFactory = function (configuration?: Configuration, b
          * Provides information about Remediations
          * @summary List Remediations
          * @param {'updated_at' | '-updated_at' | 'name' | '-name' | 'system_count' | '-system_count' | 'issue_count' | '-issue_count'} [sort] Sort order
+         * @param {string} [filter] Remediation name filter. If specified only remediations whose name matches the given string will be returned.
+         * @param {number} [limit] Maximum number of results to return
+         * @param {number} [offset] Indicates the starting position of the query relative to the complete set of items that match the query
+         * @param {string} [system] System identifier. If specified only remediations that involve the given system will be returned.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRemediations(sort?: 'updated_at' | '-updated_at' | 'name' | '-name' | 'system_count' | '-system_count' | 'issue_count' | '-issue_count', options?: any) {
-            return RemediationsApiFp(configuration).getRemediations(sort, options)(axios, basePath);
+        getRemediations(sort?: 'updated_at' | '-updated_at' | 'name' | '-name' | 'system_count' | '-system_count' | 'issue_count' | '-issue_count', filter?: string, limit?: number, offset?: number, system?: string, options?: any) {
+            return RemediationsApiFp(configuration).getRemediations(sort, filter, limit, offset, system, options)(axios, basePath);
         },
         /**
          * Updates the given Remediation
@@ -1562,12 +1654,16 @@ export class RemediationsApi extends BaseAPI {
      * Provides information about Remediations
      * @summary List Remediations
      * @param {'updated_at' | '-updated_at' | 'name' | '-name' | 'system_count' | '-system_count' | 'issue_count' | '-issue_count'} [sort] Sort order
+     * @param {string} [filter] Remediation name filter. If specified only remediations whose name matches the given string will be returned.
+     * @param {number} [limit] Maximum number of results to return
+     * @param {number} [offset] Indicates the starting position of the query relative to the complete set of items that match the query
+     * @param {string} [system] System identifier. If specified only remediations that involve the given system will be returned.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof RemediationsApi
      */
-    public getRemediations(sort?: 'updated_at' | '-updated_at' | 'name' | '-name' | 'system_count' | '-system_count' | 'issue_count' | '-issue_count', options?: any) {
-        return RemediationsApiFp(this.configuration).getRemediations(sort, options)(this.axios, this.basePath);
+    public getRemediations(sort?: 'updated_at' | '-updated_at' | 'name' | '-name' | 'system_count' | '-system_count' | 'issue_count' | '-issue_count', filter?: string, limit?: number, offset?: number, system?: string, options?: any) {
+        return RemediationsApiFp(this.configuration).getRemediations(sort, filter, limit, offset, system, options)(this.axios, this.basePath);
     }
 
     /**

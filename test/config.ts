@@ -3,7 +3,7 @@ const env = process.env;
 jest.setTimeout(10000);
 
 const config = {
-    basePath: env.TEST_BASEPATH || 'http://localhost:9002/r/insights/platform/remediations/v1',
+    basePath: env.TEST_BASEPATH || 'http://localhost:9002/api/remediations/v1',
     baseOptions: {}
 };
 

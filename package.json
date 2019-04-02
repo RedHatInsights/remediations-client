@@ -28,7 +28,7 @@
     "generate:prod": "SPEC='http://access.redhat.com/r/insights/platform/remediations/v1/openapi.json' npm run generate",
     "lint": "eslint test/*.ts",
     "test": "jest --passWithNoTests",
-    "verify": "npm-run-all lint test"
+    "verify": "npm-run-all build lint test"
   },
   "dependencies": {
     "axios": "^0.18.0"
